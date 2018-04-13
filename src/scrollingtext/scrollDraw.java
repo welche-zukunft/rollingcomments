@@ -1,12 +1,13 @@
 package scrollingtext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import processing.core.*;
 import processing.opengl.PShader;
 
 public class scrollDraw extends PApplet{
 
-	
-	String [] word = {"Scheibenwischer","Welche Zukunft","Sägespähne"};
 	float wordsize;
 	String [] words;
 	int maximumtextlength = 3;
@@ -24,24 +25,34 @@ public class scrollDraw extends PApplet{
 	
 	float timer;
 	int lastEnter = 0;
+	
+	requestSQL database;
+	static List<kommentar> kommentare;
 
+	public static userInterface mainUI;
+	
 	public void settings() {
-		 size(1200,200,P2D);
-		 smooth(8);
+		 //size(1920,200,P2D);
+		 fullScreen(P2D,2);
+		 //smooth(8);
 	}
 	
 	public void setup(){
-		
-		 textArea = createGraphics(900,30,P2D);
+		 textArea = createGraphics(1920,30,P2D);
 		 mainFont = createFont("DejaVu Sans Mono",128);
 		 shift = loadShader("./resources/shader/shiftfrag.glsl","./resources/shader/shiftvert.glsl");
+		
+		 kommentare = new ArrayList<kommentar>();
+		 database = new requestSQL(this);
+		 database.getCommentsSetup();
+		 
+		 mainUI = new userInterface();
 		 
 		 //textSize = 12
 		 charCount = textWidth / 12;
 		 outText = new char[charCount];
 		 message = new StringBuilder("");
 		 initChar();
-	 
 	}
 	
 	public void draw(){
@@ -66,9 +77,16 @@ public class scrollDraw extends PApplet{
 		  shift.set("time",(float)timer);
 		  shader(shift);
 		  image(textArea,0,0);
-		  //surface.setTitle("timePosition: " + timer);
+		  resetShader();
 		  rebuildChar();
-		  updateMessage();
+		  textSize(13);
+		  
+		  text("fps: " + frameRate,1600,900);
+
+		  if(frameCount % 60 == 0) {
+			  database.updateComments();
+		  }
+		  
 		}
 
 		void initChar(){
@@ -98,16 +116,11 @@ public class scrollDraw extends PApplet{
 		}
 
 		public void keyReleased(){
-		 if(key == 'n'){
-		  int rand = (int)random(2) + 1;
-		  message.append(" + ");
-		  message.append(word[rand]);
-		  message.append(" + ");
-		 }
+		
 		  
 		}
 	
-	
+	/*
 		private void updateMessage() {
 			for(messageItem mI : scrollApp.mainUI.allItems) {
 				if(mI.getStatus() == itemStatus.SHOW) {
@@ -119,7 +132,7 @@ public class scrollDraw extends PApplet{
 				}
 			}
 		}
-		
+		*/
 	
 	
 }

@@ -7,7 +7,7 @@ import scrollingtext.scrollDraw;
 public class scrollApp {
 
 	public static scrollDraw scroll;
-	public static userInterface mainUI;
+	
 	
 	public scrollApp() {
 		
@@ -15,8 +15,8 @@ public class scrollApp {
 	
 	public static void main(String[] args0) {
 		scrollApp mainSketch = new scrollApp();
-		mainUI = new userInterface();
 		mainSketch.start();
+		
 		
 	}
 	

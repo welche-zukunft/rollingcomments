@@ -42,8 +42,8 @@ public class userInterface extends JFrame implements ActionListener {
     
     int handleID;
     
-	static String[] listItems = {"message1","message2","message3","message4","message5","message6"};
-	static List<messageItem> allItems = new ArrayList<messageItem>();
+	//static String[] listItems = {"message1","message2","message3","message4","message5","message6"};
+	//static List<messageItem> allItems = new ArrayList<messageItem>();
 	
 	static String[] incomingItems;
 	static String[] showingItems;
@@ -56,14 +56,7 @@ public class userInterface extends JFrame implements ActionListener {
 	userInterface() {
 		
 		super("user interface");
-	
-		//add newItems to List
-		for(int i = 0; i < listItems.length;i++) {
-			allItems.add(new messageItem(i,listItems[i],itemStatus.NEW));
-		}
 
-		
-		
 		contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout(FlowLayout.LEADING));
 		
@@ -77,7 +70,6 @@ public class userInterface extends JFrame implements ActionListener {
 		incoming = new JList(newModel);
 		incoming.setSelectedIndex(0);
 		incoming.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
 		incomingSelection = new JScrollPane(incoming,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		incomingSelection.setPreferredSize(new Dimension(280,80));
 		contentPane.add(incomingSelection);
@@ -182,15 +174,15 @@ public class userInterface extends JFrame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent event) {
         if (event.getSource() == show) {
-        	allItems.get(handleID).setStatus(itemStatus.SHOW);
+        	scrollDraw.kommentare.get(handleID).setStatus(Status.SHOW);
         } 
         
         else if(event.getSource() == delete){
-        	allItems.get(handleID).setStatus(itemStatus.DELETE);
+        	scrollDraw.kommentare.get(handleID).setStatus(Status.DELETE);
         }
         
         else if(event.getSource() == back){
-        	allItems.get(handleID).setStatus(itemStatus.NEW);	
+        	scrollDraw.kommentare.get(handleID).setStatus(Status.NEW);	
         }
         //update gui
         createArrays();
@@ -204,15 +196,15 @@ public class userInterface extends JFrame implements ActionListener {
 				showedModel.clear();
 				deletedModel.clear();
 				//sort elements
-				for(messageItem mI : allItems) {
-					String listentry = mI.getId() + " : " + mI.getMessage();
-					if(mI.getStatus() == itemStatus.NEW) {
+				for(kommentar komm : scrollDraw.kommentare) {
+					String listentry = komm.getId() + " : " + komm.getContent();
+					if(komm.getStatus() == Status.NEW) {
 						newModel.addElement(listentry);
 					}
-					else if(mI.getStatus() == itemStatus.SHOW) {
+					else if(komm.getStatus() == Status.SHOW) {
 						showedModel.addElement(listentry);
 					}			
-					else if(mI.getStatus() == itemStatus.DELETE) {
+					else if(komm.getStatus() == Status.DELETE) {
 						deletedModel.addElement(listentry);
 					}								
 				}
