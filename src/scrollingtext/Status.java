@@ -1,5 +1,5 @@
 package scrollingtext;
 
 public enum Status {
-	NEW,SHOW,DELETE
+	NEW,LOAD,SHOW,DELETE
 }

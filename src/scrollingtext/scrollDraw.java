@@ -12,12 +12,12 @@ public class scrollDraw extends PApplet{
 	String [] words;
 	int maximumtextlength = 3;
 	
-	StringBuilder message;
+	static StringBuilder message;
 	
 	PFont mainFont;
 	PShader shift;
 	PGraphics textArea;
-	int textWidth = 900;
+	int textWidth = 1920;
 	
 	int charCount;
 	char[] outText;
@@ -32,14 +32,13 @@ public class scrollDraw extends PApplet{
 	public static userInterface mainUI;
 	
 	public void settings() {
-		 //size(1920,200,P2D);
 		 fullScreen(P2D,2);
 		 //smooth(8);
 	}
 	
 	public void setup(){
-		 textArea = createGraphics(1920,30,P2D);
-		 mainFont = createFont("DejaVu Sans Mono",128);
+		 textArea = createGraphics(1950,80,P2D);
+		 mainFont = createFont("Monospaced.plain",128);
 		 shift = loadShader("./resources/shader/shiftfrag.glsl","./resources/shader/shiftvert.glsl");
 		
 		 kommentare = new ArrayList<kommentar>();
@@ -58,8 +57,7 @@ public class scrollDraw extends PApplet{
 	public void draw(){
 		  clear();
 		  background(100);
-		  fill(200);
-		  rect(100,0,888,height);
+		  
 		  textArea.beginDraw();
 		  textArea.clear();
 		  textArea.background(0);
@@ -68,7 +66,9 @@ public class scrollDraw extends PApplet{
 		  textArea.rect(0,0,1,textArea.height);
 		  textArea.fill(255);
 		  textArea.textFont(mainFont);
-		  textArea.textSize(20);
+		  textArea.textSize(50);
+		  //System.out.println(textArea.textWidth("A")); = 30.
+		  // 64 in / 1 out
 		  textArea.textAlign(LEFT, TOP);
 		  textArea.text(outString,0,0);
 		  textArea.endDraw();
@@ -82,11 +82,12 @@ public class scrollDraw extends PApplet{
 		  textSize(13);
 		  
 		  text("fps: " + frameRate,1600,900);
-
+		  
+		  /*
 		  if(frameCount % 60 == 0) {
 			  database.updateComments();
 		  }
-		  
+		  */
 		}
 
 		void initChar(){
@@ -120,19 +121,20 @@ public class scrollDraw extends PApplet{
 		  
 		}
 	
-	/*
-		private void updateMessage() {
-			for(messageItem mI : scrollApp.mainUI.allItems) {
-				if(mI.getStatus() == itemStatus.SHOW) {
+	
+		public static void updateMessage() {
+			for(kommentar mI : kommentare) {
+				if(mI.getStatus() == Status.SHOW) {
 					message.append(" + ");
-					message.append(mI.getMessage());
+					message.append(mI.getContent());
 					message.append(" + ");
-					mI.setStatus(itemStatus.DELETE);
-					scrollApp.mainUI.createArrays();
+					System.out.println(message.toString());
+					mI.setStatus(Status.DELETE);
+					mainUI.createArrays();
 				}
 			}
 		}
-		*/
+		
 	
 	
 }

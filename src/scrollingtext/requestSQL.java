@@ -38,7 +38,6 @@ public class requestSQL {
 	public void getCommentsSetup(){
 		msql.query("SELECT * FROM kommentar");
 		while(msql.next()){
-			//System.out.println(msql.getInt(1) + msql.getString(2) + msql.getTime(3));
 			Time creation = msql.getTime(3);
 			int id = msql.getInt(1);
 			String content = msql.getString(2);
@@ -51,7 +50,7 @@ public class requestSQL {
 
 		}
 	
-	
+	//TODO: change loadflag after load
 	public void updateComments() {
 		System.out.println(lastTime);
 		msql.query("SELECT * FROM kommentar WHERE time > '" + lastTime +"'");

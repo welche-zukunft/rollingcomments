@@ -17,5 +17,6 @@ void main(void) {
   uv.x = mod(uv.x,1.);
   uv.y = 1. - uv.y;
   vec3 col = texture2D(texture,uv).xyz;
-  gl_FragColor = vec4(col, 1.0);
+  vec3 col2 = vec3(uv.x);
+  gl_FragColor = vec4(col2, 1.0);
 }

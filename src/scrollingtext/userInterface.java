@@ -174,15 +174,16 @@ public class userInterface extends JFrame implements ActionListener {
 	
 	public void actionPerformed(ActionEvent event) {
         if (event.getSource() == show) {
-        	scrollDraw.kommentare.get(handleID).setStatus(Status.SHOW);
+        	scrollDraw.kommentare.get(handleID-1).setStatus(Status.SHOW);
+        	scrollDraw.updateMessage();
         } 
         
         else if(event.getSource() == delete){
-        	scrollDraw.kommentare.get(handleID).setStatus(Status.DELETE);
+        	scrollDraw.kommentare.get(handleID-1).setStatus(Status.DELETE);
         }
         
         else if(event.getSource() == back){
-        	scrollDraw.kommentare.get(handleID).setStatus(Status.NEW);	
+        	scrollDraw.kommentare.get(handleID-1).setStatus(Status.NEW);	
         }
         //update gui
         createArrays();
