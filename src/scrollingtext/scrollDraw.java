@@ -17,7 +17,7 @@ public class scrollDraw extends PApplet{
 	PFont mainFont;
 	PShader shift;
 	PGraphics textArea;
-	int textWidth = 1920;
+	int textWidth = 1950;
 	
 	int charCount;
 	char[] outText;
@@ -26,7 +26,7 @@ public class scrollDraw extends PApplet{
 	float timer;
 	int lastEnter = 0;
 	
-	requestSQL database;
+	public static requestSQL database;
 	static List<kommentar> kommentare;
 
 	public static userInterface mainUI;
@@ -43,12 +43,14 @@ public class scrollDraw extends PApplet{
 		
 		 kommentare = new ArrayList<kommentar>();
 		 database = new requestSQL(this);
-		 database.getCommentsSetup();
-		 
+
 		 mainUI = new userInterface();
 		 
-		 //textSize = 12
-		 charCount = textWidth / 12;
+		 database.getCommentsSetup();
+		 
+		 //textSize = 30
+		 charCount = textWidth / 30;
+		 //System.out.println(charCount);
 		 outText = new char[charCount];
 		 message = new StringBuilder("");
 		 initChar();
@@ -56,15 +58,16 @@ public class scrollDraw extends PApplet{
 	
 	public void draw(){
 		  clear();
-		  background(100);
+		  colorMode(RGB, 255);
+		  background(0,255,0);
 		  
 		  textArea.beginDraw();
 		  textArea.clear();
-		  textArea.background(0);
+		  textArea.background(255);
 		  textArea.noStroke();
-		  textArea.fill(255,2,0,255);
-		  textArea.rect(0,0,1,textArea.height);
-		  textArea.fill(255);
+		  //textArea.fill(255,255,0,255);
+		  //textArea.rect(0,0,1,textArea.height);
+		  textArea.fill(0);
 		  textArea.textFont(mainFont);
 		  textArea.textSize(50);
 		  //System.out.println(textArea.textWidth("A")); = 30.
@@ -72,22 +75,30 @@ public class scrollDraw extends PApplet{
 		  textArea.textAlign(LEFT, TOP);
 		  textArea.text(outString,0,0);
 		  textArea.endDraw();
-		  translate(100,100);
+		  //translate(100,100);
+		  pushMatrix();
+		  translate(0,1000);
 		  timer = (float)(frameCount*0.002) % 1;
 		  shift.set("time",(float)timer);
 		  shader(shift);
 		  image(textArea,0,0);
 		  resetShader();
+		  popMatrix();
+		  
+		  fill(0,255,0);
+		  noStroke();
+		  rect(0,1000,30,80);
+		  rect(1890,1000,30,80);
 		  rebuildChar();
-		  textSize(13);
 		  
-		  text("fps: " + frameRate,1600,900);
+		  //textSize(13);
+		  //text("fps: " + frameRate,1600,900);
 		  
-		  /*
+		  
 		  if(frameCount % 60 == 0) {
 			  database.updateComments();
 		  }
-		  */
+		  
 		}
 
 		void initChar(){
@@ -103,8 +114,7 @@ public class scrollDraw extends PApplet{
 		  int startend = (start + charCount)%charCount; 
 		  if(startend != lastEnter){
 			// INFO  
-		    // 888 are in (=74) - 12 are out ( = 1)
-			  
+		    // 1920 are in (=64) - 30 are out ( = 1)
 		    char newChar = ' ';
 		    if(message.length() > 0){
 		      newChar = message.charAt(0);
@@ -117,8 +127,10 @@ public class scrollDraw extends PApplet{
 		}
 
 		public void keyReleased(){
-		
-		  
+			if (key == 'i'){
+    		 	mainUI.contentPane.setVisible(true);
+    		 	mainUI.guiframe.setVisible(true);
+    	      } 
 		}
 	
 	
@@ -128,8 +140,8 @@ public class scrollDraw extends PApplet{
 					message.append(" + ");
 					message.append(mI.getContent());
 					message.append(" + ");
-					System.out.println(message.toString());
-					mI.setStatus(Status.DELETE);
+					//System.out.println(message.toString());
+					Status newStatus = mI.setStatus(Status.SHOWED);
 					mainUI.createArrays();
 				}
 			}

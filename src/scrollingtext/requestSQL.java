@@ -16,59 +16,70 @@ import processing.core.PApplet;
 public class requestSQL {
 
 	MySQL msql;
-	MySQL timestampMsql;
+	MySQL statusMsql;
 	
 	boolean sql=true;
 	
 	int currentMaxId = 0;
 	PApplet parent;
-	
-	Time lastTime;
+
 
 	public requestSQL(PApplet parent){
-		lastTime = new Time(0);
 		this.parent = parent;
 	    String user     = "root";
 	    String pass     = "autoIndex2026";
 	    String database = "kommentare";
 	    msql = new MySQL(parent, "localhost", database, user, pass );
 	    msql.connect();
+	    
+	    statusMsql= new MySQL(parent, "localhost", database, user, pass );
+	    statusMsql.connect();
+	    
 	}
 
 	public void getCommentsSetup(){
 		msql.query("SELECT * FROM kommentar");
 		while(msql.next()){
-			Time creation = msql.getTime(3);
 			int id = msql.getInt(1);
 			String content = msql.getString(2);
-			if(creation.after(lastTime)) {
-					lastTime = creation;	
-				}
-			kommentar newcomment = new kommentar(id,content,creation);
+			Time creation = msql.getTime(4);
+			String statusS = msql.getString(3);
+			Status status = Status.NEW;
+			if(statusS.equals("NEW"))  status = Status.NEW;  
+		    else if (statusS.equals("LOAD"))   status = Status.LOAD;
+		    else if (statusS.equals("SHOW"))   status = Status.SHOWED;
+		    else if (statusS.equals("DELETE"))   status = Status.DELETE;
+
+			kommentar newcomment = new kommentar(id,content,creation,status);
 			scrollDraw.kommentare.add(newcomment);
 			}
 
 		}
 	
-	//TODO: change loadflag after load
 	public void updateComments() {
-		System.out.println(lastTime);
-		msql.query("SELECT * FROM kommentar WHERE time > '" + lastTime +"'");
+		msql.query("SELECT * FROM kommentar WHERE status = 'NEW'");
+		boolean update = false;
 		while(msql.next()){
-			Time creation = msql.getTime(3);
-			System.out.println("create: " + creation);
 			int id = msql.getInt(1);
 			String content = msql.getString(2);
-			if(creation.after(lastTime)) {
-					lastTime = creation;	
-				}
-			kommentar newcomment = new kommentar(id,content,creation);
+			Time creation = msql.getTime(4);
+			String statusS = msql.getString(3);
+			
+			Status status = Status.NEW;
+			if(statusS.equals("NEW"))  status = Status.NEW;  
+		    else if (statusS.equals("LOAD"))   status = Status.LOAD;
+		    else if (statusS.equals("SHOW"))   status = Status.SHOW;
+		    else if (statusS.equals("DELETE"))   status = Status.DELETE;
+			
+			kommentar newcomment = new kommentar(id,content,creation,status);
 			scrollDraw.kommentare.add(newcomment);
+			update = true;
+			
+			}
+		if(update == true) {
 			scrollDraw.mainUI.createArrays();
 			}
-		System.out.println(scrollDraw.kommentare.size());
 		}
-	
 }
 	
 
