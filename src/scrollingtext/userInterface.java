@@ -264,7 +264,7 @@ public class userInterface extends JFrame implements ActionListener {
 		    	}
 		    	else if(reallyselected == false){
 		    		alert.setText("do again!");
-		    		
+		    		guiframe.revalidate();
 		    		
 		    	}
 		    }	   
