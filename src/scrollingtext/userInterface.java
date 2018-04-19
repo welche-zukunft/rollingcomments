@@ -10,11 +10,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -35,7 +40,7 @@ public class userInterface extends JFrame implements ActionListener {
 	
 	JTextArea textPreview;
 	JTextField alert;
-	Container contentPane;
+	Container contentPane;;
 	JButton show = new JButton("Show");
     JButton delete = new JButton("Delete");
     JButton back = new JButton("Back");
@@ -62,28 +67,35 @@ public class userInterface extends JFrame implements ActionListener {
 	
 	public userInterface() {
 		lastelement = "";
-		
+		Font font2 = new Font("SansSerif", Font.PLAIN, 15);
+		Font font2b = new Font("SansSerif", Font.BOLD, 15);
 		this.guiframe = new JFrame("Welche Zukunft?! - Kommentare");
-		this.guiframe.setBounds(10, 10, 510, 710);
-	    Dimension d = new Dimension(500,700);
+		this.guiframe.setBounds(10, 10, 790, 990);
+	    Dimension d = new Dimension(800,1000);
 	    Container con = this.guiframe.getContentPane();
 	    con.setPreferredSize(d);
+	    con.setSize(d);
+	    con.setMaximumSize(d);
 	    
 		contentPane = getContentPane();
-		contentPane.setLayout(new FlowLayout(FlowLayout.LEADING));
+		
+		//contentPane.setLayout(new FlowLayout(FlowLayout.LEADING));
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 		
 		
 		//Label 1
 		JLabel head1 = new JLabel("incoming messages");
+		head1.setFont(font2b);
 		contentPane.add(head1);
 		
 		//List 1 = Incoming Messages
 		newModel = new DefaultListModel();
 		incoming = new JList(newModel);
+		incoming.setFont(font2);
 		incoming.setSelectedIndex(0);
 		incoming.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		incomingSelection = new JScrollPane(incoming,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		incomingSelection.setPreferredSize(new Dimension(280,80));
+		incomingSelection.setPreferredSize(new Dimension(500,180));
 		contentPane.add(incomingSelection);
 		incoming.addMouseListener(new MouseAdapter() {
 	        public void mouseClicked(java.awt.event.MouseEvent e) {	
@@ -109,16 +121,18 @@ public class userInterface extends JFrame implements ActionListener {
 	
 		//Label 2
 		JLabel head2 = new JLabel("showed messages");
+		head2.setFont(font2b);
 		contentPane.add(head2);
 		
 		//List 2 = showed Messages
 		showedModel = new DefaultListModel();
 		showed = new JList(showedModel);
+		showed.setFont(font2);
 		showed.setSelectedIndex(0);
 		showed.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		showedSelection = new JScrollPane(showed,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		showedSelection.setPreferredSize(new Dimension(280,80));
+		showedSelection.setPreferredSize(new Dimension(500,180));
 		contentPane.add(showedSelection);
 		showed.addMouseListener(new MouseAdapter() {
 	        public void mouseClicked(java.awt.event.MouseEvent e) {	
@@ -145,16 +159,18 @@ public class userInterface extends JFrame implements ActionListener {
 		
 		//Label 3
 		JLabel head3 = new JLabel("deleted messages");
+		head3.setFont(font2b);
 		contentPane.add(head3);
 		
 		//List 3 = deleted Messages
 		deletedModel = new DefaultListModel();
 		deleted = new JList(deletedModel);
+		deleted.setFont(font2);
 		deleted.setSelectedIndex(0);
 		deleted.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		deletedSelection = new JScrollPane(deleted,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		deletedSelection.setPreferredSize(new Dimension(280,80));
+		deletedSelection.setPreferredSize(new Dimension(500,180));
 		contentPane.add(deletedSelection);
 		deleted.addMouseListener(new MouseAdapter() {
 	        public void mouseClicked(java.awt.event.MouseEvent e) {	
@@ -177,10 +193,13 @@ public class userInterface extends JFrame implements ActionListener {
 			}	
 		});	
 		
+		
+		Font font0 = new Font("SansSerif", Font.BOLD, 30);
 		//Preview Textfield
 		textPreview = new JTextArea("preview selected mesage here");
-		textPreview.setSize(new Dimension(460,280));
-		textPreview.setPreferredSize(new Dimension(460,280));
+		textPreview.setSize(new Dimension(700,280));
+		textPreview.setFont(font0);
+		textPreview.setPreferredSize(new Dimension(700,280));
 		textPreview.setLineWrap(true);
 		textPreview.setWrapStyleWord(true);
 		textPreview.setAlignmentY(TOP_ALIGNMENT);
@@ -197,24 +216,40 @@ public class userInterface extends JFrame implements ActionListener {
 		alert.setFont(font1);
 		
 		//add Buttons
+
 		show.setFocusable(false);
 		delete.setFocusable(false);
-		back.setFocusable(false);
-		
+		back.setFocusable(false);	
 		show.addActionListener(this); 
-		contentPane.add(show);
+		//contentPane.add(show);
 		delete.addActionListener(this); 
-		contentPane.add(delete);
+		//contentPane.add(delete);
 		back.addActionListener(this); 
-		contentPane.add(back);
+		//contentPane.add(back);
 		
-		contentPane.add(alert);
+		//contentPane.add(alert);
+		
+		
+		JPanel buttonPane = new JPanel();
+		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+		buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+		buttonPane.add(Box.createHorizontalGlue());
+		buttonPane.add(show);
+		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
+		buttonPane.add(delete);
+		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
+		buttonPane.add(back);
+		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
+		buttonPane.add(alert);		
+
+		contentPane.add(buttonPane);
+		
 		
 		show.setEnabled(false);
 		delete.setEnabled(false);
 		back.setEnabled(false);
-		
-		this.setSize(500, 700);
+
+		//this.setSize(500, 700);
 		//this.guiframe.setSize(500, 700);
 		this.guiframe.setContentPane(contentPane);  
 		this.guiframe.pack(); 
